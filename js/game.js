@@ -72,16 +72,21 @@ Game.prototype.initTowers = function() {
 }
 
 Game.prototype.createDisks = function() {
-	for (var i = 0; i < this.numDisks; i++) {
+	for (var i = 0; i < 3; i++) {
 		var disk = new Disk(i, DISK_WIDTHS[i], DISK_HEIGHT, FONT_SIZE, FONT_FACE, $.proxy(this.handleDrag, this));
 		this.disks.push(disk);
 		$("#game").append(disk.createElement());
 		$("#images").append(disk.createImageElement());
 	}
-	for (var j = this.numDisks - 1; j >= 0; j--) {
-		this.towers[0].addDisk(this.disks[j]);
-		this.disks[j].setTower(this.towers[0]);
+
+        this.towers[1].addDisk(this.disks[2]);
+		this.disks[2].setTower(this.towers[1]);
+	for (var j=1;j >=0; j--) {
+		this.towers[2].addDisk(this.disks[j]);
+		this.disks[j].setTower(this.towers[2]);
 	}
+
+
 }
 
 Game.prototype.initDisks = function() {
@@ -123,13 +128,10 @@ Game.prototype.handleDrop = function(event, ui) {
 }
 
 Game.prototype.checkSolved = function() {
-	for (var i = 1; i < this.towers.length; i++) {
-		if (this.towers[i].getDisks().length == this.disks.length) {
+	if ((this.towers[1].getDisks().length==0) && (this.towers[2].getDisks().length==1) && (this.towers[2].getDisks()[0].getNum()==2)) {
 			alert("Solved in " + this.moves + " moves.");
 			$("#startOver").click();
-			break;
 		}
-	}
 }
 
 Game.prototype.getTower = function(elem) {
